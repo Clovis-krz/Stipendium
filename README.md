@@ -16,7 +16,10 @@ the merchand
 MERCHAND GUIDE :
 - Install the Stipendium module on your website
 - Insert your public personnal wallet address in the "my wallet address" field
-- Send at least 0,00002
+- ! NOT IMPLEMENTED yet, swap received amount in desired currency (Send at least 0,00002 SOL on the newly generated public address ( 0,000005*4 on the solana blockchain each transaction is 0,000005 sol, 0,00002 allows to execute 4 transactions)
+The other transactions fees will be autonomously substracted from the amount received at each transaction from the customer
+- Your are Ready to receive payments with Stipendium
+
 
 ALGORITHM PROCESS :
 
