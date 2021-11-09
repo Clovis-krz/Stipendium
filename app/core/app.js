@@ -1,5 +1,7 @@
+const { time } = require('console');
 const express = require('express');
 const account = require('./new-account');
+const tools = require('./tools');
 
 const app = express();
 
@@ -11,10 +13,16 @@ app.use((req, res, next) => {
   });
 
 app.use('/api/pay', (req, res, next) => {
+    var amount = req.amount;
     var [public_key, transaction_nb] = account.Create_Account();
+    var time_left = tools.Time_Remaining('../data/hot-wallet/private/'+transaction_nb+'.txt');
+    console.log(time_left);
     const transaction_info = {
-        publicKey : {public_key},
-        order_Nb : {transaction_nb}
+        public_key,
+        amount : '',
+        currency : 'SOL',
+        transaction_nb,
+        time_left
     } 
     res.status(200).json(transaction_info);
   });

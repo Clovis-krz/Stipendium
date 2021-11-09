@@ -1,3 +1,4 @@
+const { time } = require('console');
 const fs = require('fs');
 
 function read (path){
@@ -64,4 +65,27 @@ function Get_Last_Transaction_Number(path){
     return max_order_nb
 }
 
-module.exports = { read, writeFile, String_To_Uint8Array, Uint8Array_To_String, Get_files_From_Folder, Get_Last_Transaction_Number };
+function Get_Created_Date(path){  
+    const { birthtime } = fs.statSync(path)
+    return birthtime
+}
+
+function Time_Remaining(path){
+    var creation_time = Get_Created_Date(path);
+    function toTimestamp(strDate){
+        var datum = Date.parse(strDate);
+        return datum/1000;
+       }
+    var creation_timestamp = toTimestamp(creation_time);
+    var expiration = creation_timestamp + 3600;
+    var time_left = Math.trunc(expiration - (Date.now()/1000));
+    console.log(time_left);
+    if (time_left > 0){
+        return String(Math.trunc(time_left/60))+" min "+String(time_left%60)+" sec";
+    }
+    else{
+        return 0;
+    }
+}
+
+module.exports = { read, writeFile, String_To_Uint8Array, Uint8Array_To_String, Get_files_From_Folder, Get_Last_Transaction_Number, Get_Created_Date, Time_Remaining };
