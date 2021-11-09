@@ -45,4 +45,23 @@ function Uint8Array_To_String(arr){
     return text_public;
 }
 
-module.exports = { read, writeFile, String_To_Uint8Array, Uint8Array_To_String };
+function Get_files_From_Folder(path){
+    var files = fs.readdirSync(path);
+    return files;
+}
+
+function Get_Last_Transaction_Number(path){
+    var files = Get_files_From_Folder(path)
+    var max_order_nb = 0;
+    for (let index = 0; index < files.length; index++) {
+        var order_nb = "";
+        for (let index2 = 0; index2 < (files[index].length)-4; index2++) {
+            order_nb = order_nb + files[index][index2];  
+        }
+        if (Number(order_nb) > max_order_nb) 
+            max_order_nb = Number(order_nb);
+    }
+    return max_order_nb
+}
+
+module.exports = { read, writeFile, String_To_Uint8Array, Uint8Array_To_String, Get_files_From_Folder, Get_Last_Transaction_Number };
