@@ -18,15 +18,7 @@ app.use('/api/pay', (req, res, next) => {
     var amount = req.amount;
     var [public_key, transaction_nb] = account.Create_Account();
     var time_left = tools.Time_Remaining('../data/hot-wallet/private/'+transaction_nb+'.txt');
-    console.log(time_left);
-    const transaction_info = {
-        public_key,
-        amount : '',
-        currency : 'SOL',
-        transaction_nb,
-        time_left
-    } 
-    res.status(200).json(transaction_info);
+    res.redirect('/api/monitoring?ordernb='+transaction_nb);
   });
 
 app.use('/api/monitoring', (req, res, next) => {
@@ -43,8 +35,8 @@ app.use('/api/monitoring', (req, res, next) => {
     if (amount_to_pay <= 0) {
       const merchand_address = tools.read('../data/hot-wallet/merchand_public_address.txt');
       const amount_to_transfer = received - 0.000005;
-      transfer.Send_Money_To_Merchand(merchand_address, order_nb, amount_to_transfer);
-      res.status(200).json({order_nb, transaction_status : "success"});
+      transfer.Send_Money_To_Merchand(merchand_address, order_nb, amount_to_transfer); //transfer from order_wallet to merchand wallet automatically
+      res.status(200).json({order_nb, transaction_status : "success"}); //TODO send the over money received back to customer and send back if transaction failed
     }
     else{
       const transaction_info = {
