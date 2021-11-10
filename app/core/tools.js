@@ -79,7 +79,6 @@ function Time_Remaining(path){
     var creation_timestamp = toTimestamp(creation_time);
     var expiration = creation_timestamp + 3600;
     var time_left = Math.trunc(expiration - (Date.now()/1000));
-    console.log(time_left);
     if (time_left > 0){
         return String(Math.trunc(time_left/60))+" min "+String(time_left%60)+" sec";
     }
@@ -88,4 +87,13 @@ function Time_Remaining(path){
     }
 }
 
-module.exports = { read, writeFile, String_To_Uint8Array, Uint8Array_To_String, Get_files_From_Folder, Get_Last_Transaction_Number, Get_Created_Date, Time_Remaining };
+function PublicKey_From_OrderNb(order_nb){
+    const private = read('../data/hot-wallet/private/'+order_nb+'.txt');
+    let secretKey = String_To_Uint8Array(private, 64);
+    
+    const {Keypair} = require("@solana/web3.js");
+    let wallet = Keypair.fromSecretKey(secretKey);
+    return String(wallet.publicKey);
+}
+
+module.exports = { read, writeFile, String_To_Uint8Array, Uint8Array_To_String, Get_files_From_Folder, Get_Last_Transaction_Number, Get_Created_Date, Time_Remaining, PublicKey_From_OrderNb };

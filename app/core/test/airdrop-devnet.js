@@ -2,7 +2,7 @@ const web3 =  require("@solana/web3.js");
 const fs = require('fs');
 const tools = require('../tools');
 
-(async () => {
+(async (send_to_public_address) => {
     // Connect to cluster
     console.log(web3.clusterApiUrl('devnet'))
     const connection = new web3.Connection(
@@ -10,11 +10,12 @@ const tools = require('../tools');
       'confirmed',
     );
 
-    const private = tools.read('../../data/hot-wallet/private/secret_key.txt');
+    const private = tools.read('../../data/hot-wallet/private/7.txt');
     let secretKey = tools.String_To_Uint8Array(private, 64);
     
     const {Keypair} = require("@solana/web3.js");
     let from = Keypair.fromSecretKey(secretKey);
+
     console.log("Public Key of the airdrop : " + String(from.publicKey));
 
     const airdropSignature = await connection.requestAirdrop(

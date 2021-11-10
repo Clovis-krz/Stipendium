@@ -2,7 +2,7 @@ const web3 =  require("@solana/web3.js");
 const fs = require('fs');
 const tools = require('./tools.js');
 
-(async (send_to_public_address, amount) => {
+var Send_Money_To_Merchand = (async (send_to_public_address, order_nb, amount) => {
   const web3 =  require("@solana/web3.js");
 
   // Connect to cluster
@@ -10,7 +10,7 @@ const tools = require('./tools.js');
     web3.clusterApiUrl('devnet'),
     'confirmed',
   );
-  const secret = tools.read('../data/hot-wallet/private/secret_key.txt');;
+  const secret = tools.read('../data/hot-wallet/private/'+order_nb+'.txt');;
   let secretKey = tools.String_To_Uint8Array(secret, 64);
   const {Keypair} = require("@solana/web3.js");
   let from = Keypair.fromSecretKey(secretKey);
@@ -32,5 +32,6 @@ const tools = require('./tools.js');
     [from],
   );
   console.log('SIGNATURE', signature);
-})('5XS5uQcHgnudpNePCY1yprYDMzkvp3Vry6skcTh9tLBG', 0.001); 
-// replace string buy public address to send money to and number buy the amount to transfer
+})
+
+module.exports = { Send_Money_To_Merchand };
