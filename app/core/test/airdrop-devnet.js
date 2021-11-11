@@ -10,19 +10,20 @@ const tools = require('../tools');
       'confirmed',
     );
 
-    const private = tools.read('../../data/hot-wallet/private/7.txt');
+    /*const private = tools.read('../../data/hot-wallet/private/7.txt');
     let secretKey = tools.String_To_Uint8Array(private, 64);
     
     const {Keypair} = require("@solana/web3.js");
-    let from = Keypair.fromSecretKey(secretKey);
+    let from = Keypair.fromSecretKey(secretKey);*/
+    let from = new web3.PublicKey(send_to_public_address);
 
-    console.log("Public Key of the airdrop : " + String(from.publicKey));
+    console.log("Public Key of the airdrop : " + String(from));
 
     const airdropSignature = await connection.requestAirdrop(
-        from.publicKey,
+        from,
         web3.LAMPORTS_PER_SOL,
       );
       await connection.confirmTransaction(airdropSignature);
 
     console.log("airdrop complete");
-})();
+})('E9uYhTG7eJdHoB9ngEtC1pcYnPtfRvt6ntbZqGsoCTCz');

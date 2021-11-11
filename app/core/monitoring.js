@@ -35,7 +35,7 @@ var Amount_Received = (async(order_nb) => {
     }
     else{
         let sol_received = Number(res.lamports)/1000000000;
-        console.log("received : "+ sol_received+" SOL");
+        console.log("Order Nb "+order_nb+" : received : "+ sol_received+" SOL");
         return sol_received;
     }
 })

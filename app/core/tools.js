@@ -6,13 +6,13 @@ function read (path){
         const data = fs.readFileSync(path, 'utf8')
         return data;
       } catch (err) {
-        console.error(err)
+        //console.error(err)
       }
 }
 
 function writeFile(name, content){
     fs.writeFile(name, content, (err) => {
-        if (err) throw err;
+        //if (err) throw err;
         console.log(name + ' saved');
         });
 }

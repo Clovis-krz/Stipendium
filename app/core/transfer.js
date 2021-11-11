@@ -31,7 +31,7 @@ var Send_Money_To_Merchand = (async (send_to_public_address, order_nb, amount) =
     transaction,
     [from],
   );
-  console.log('SIGNATURE', signature);
+  console.log('Transaction Nb '+order_nb+' : '+'Sent '+ amount +' SOL to '+send_to_public_address+' , Signature of the transaction : ', signature);
 })
 
 module.exports = { Send_Money_To_Merchand };
