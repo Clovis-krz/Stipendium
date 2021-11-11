@@ -1,4 +1,5 @@
 const web3 =  require("@solana/web3.js");
+const { read } = require("fs");
 const tools = require('./tools');
 
 var Info_account = (async (order_nb)=> {
@@ -33,5 +34,22 @@ var Amount_Received = (async(order_nb) => {
     }
 })
 
-module.exports = { Amount_Received };
+var Get_Fees_process = (async () => {
+  var connection = new web3.Connection(
+    web3.clusterApiUrl('devnet'),
+    'confirmed',
+  );
+  let blockhash = await connection.getRecentBlockhash();
+  let fees = await tools.Lamports_To_SOL(blockhash.feeCalculator.lamportsPerSignature);
+  tools.writeFile('../data/fees.txt', String(fees))
+  return fees;
+})
+
+function Get_Fees(){
+  Get_Fees_process();
+  let fees = tools.read('../data/fees.txt');
+  return fees;
+}
+
+module.exports = { Amount_Received, Get_Fees };
 

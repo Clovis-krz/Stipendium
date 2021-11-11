@@ -1,5 +1,6 @@
 const { time } = require('console');
 const fs = require('fs');
+const web3 =  require("@solana/web3.js");
 
 function read (path){
     try {

@@ -48,7 +48,7 @@ app.use('/api/monitoring', (req, res, next) => {
       var amount_to_pay = amount - received;
       if (amount_to_pay <= 0) {
         const merchand_address = tools.read('../data/hot-wallet/merchand_public_address.txt');
-        const amount_to_transfer = received - 0.000005;
+        const amount_to_transfer = received - monitoring.Get_Fees();
         transfer.Send_Money_To_Merchand(merchand_address, order_nb, amount_to_transfer); //transfer from order_wallet to merchand wallet automatically
         fs.unlinkSync('../data/transactions/price-'+order_nb+'.txt');
         fs.unlinkSync('../data/hot-wallet/private/'+order_nb+'.txt');
