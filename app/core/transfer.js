@@ -21,7 +21,7 @@ var Send_Money_To_Merchand = (async (send_to_public_address, order_nb, amount) =
     web3.SystemProgram.transfer({
       fromPubkey: from.publicKey,
       toPubkey: base58publicKey,
-      lamports: 1000000000*amount,//web3.LAMPORTS_PER_SOL / 100,
+      lamports: tools.SOL_To_Lamports(amount),//web3.LAMPORTS_PER_SOL / 100,
     }),
   );
 

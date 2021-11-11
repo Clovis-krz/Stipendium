@@ -1,5 +1,4 @@
 const web3 =  require("@solana/web3.js");
-const { SSL_OP_EPHEMERAL_RSA } = require("constants");
 const tools = require('./tools');
 
 var Info_account = (async (order_nb)=> {
@@ -21,12 +20,6 @@ var Info_account = (async (order_nb)=> {
     return account;
   })
 
-function sleep(ms) {
-    return new Promise(
-      resolve => setTimeout(resolve, ms)
-    );
-}
-
 var Amount_Received = (async(order_nb) => {
     let res = await Info_account(order_nb);
     if (res == null) {
@@ -34,7 +27,7 @@ var Amount_Received = (async(order_nb) => {
             return 0;
     }
     else{
-        let sol_received = Number(res.lamports)/1000000000;
+        let sol_received = tools.Lamports_To_SOL(Number(res.lamports));
         console.log("Order Nb "+order_nb+" : received : "+ sol_received+" SOL");
         return sol_received;
     }

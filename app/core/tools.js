@@ -96,4 +96,12 @@ function PublicKey_From_OrderNb(order_nb){
     return String(wallet.publicKey);
 }
 
-module.exports = { read, writeFile, String_To_Uint8Array, Uint8Array_To_String, Get_files_From_Folder, Get_Last_Transaction_Number, Get_Created_Date, Time_Remaining, PublicKey_From_OrderNb };
+function Lamports_To_SOL(lamports){
+    return lamports/1000000000;
+}
+
+function SOL_To_Lamports(SOL){
+    return SOL*1000000000;
+}
+
+module.exports = { read, writeFile, String_To_Uint8Array, Uint8Array_To_String, Get_files_From_Folder, Get_Last_Transaction_Number, Get_Created_Date, Time_Remaining, PublicKey_From_OrderNb, Lamports_To_SOL, SOL_To_Lamports };
