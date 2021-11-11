@@ -5,6 +5,7 @@ const account = require('./new-account');
 const monitoring = require('./monitoring');
 const transfer = require('./transfer');
 const tools = require('./tools');
+const transaction_history = require('./transaction_history');
 
 const app = express();
 
@@ -47,12 +48,15 @@ app.use('/api/monitoring', (req, res, next) => {
     monitoring.Amount_Received(order_nb).then(received => {
       var amount_to_pay = amount - received;
       if (amount_to_pay <= 0) {
+        var amount_to_refund = 0;
         const merchand_address = tools.read('../data/hot-wallet/merchand_public_address.txt');
-        const amount_to_transfer = received - monitoring.Get_Fees();
+        if (amount_to_pay < 0 && (amount_to_pay*(-1)) > (2*monitoring.Get_Fees()) ) { //If customer sent more than required, send back what's over to customer
+          amount_to_refund = (-1)*amount_to_pay - monitoring.Get_Fees();
+          transaction_history.Refund_customer(order_nb, amount_to_refund);
+        }
+        const amount_to_transfer = received - amount_to_refund - (2*monitoring.Get_Fees());
         transfer.Send_Money_To_Merchand(merchand_address, order_nb, amount_to_transfer); //transfer from order_wallet to merchand wallet automatically
-        fs.unlinkSync('../data/transactions/price-'+order_nb+'.txt');
-        fs.unlinkSync('../data/hot-wallet/private/'+order_nb+'.txt');
-        res.redirect('/api/payment-success'); //TODO send the over money received back to customer and send back if transaction failed
+        res.redirect('/api/payment-success'); //TODO send back if transaction failed
       }
       else{
         const transaction_info = {
