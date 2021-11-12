@@ -20,6 +20,7 @@ app.use('/api/pay', (req, res, next) => {
     var amount = req.query.amount;
     var [public_key, transaction_nb] = account.Create_Account();
     tools.writeFile('../data/transactions/price-'+transaction_nb+'.txt', amount);
+    tools.writeFile('../data/transactions/status-'+transaction_nb+'.txt', "not paid");
     var time_left = tools.Time_Remaining('../data/hot-wallet/private/'+transaction_nb+'.txt');
     res.redirect('/api/monitoring?ordernb='+transaction_nb);
   });
@@ -32,9 +33,18 @@ app.use('/api/payment-failed', (req, res, next) => {
   res.status(403).json({payment_status: "failed, time elapsed"});
 })
 
+app.use('/api/checking-payment', (req, res, next) => {
+  var order_nb = req.query.ordernb;
+  tools.writeFile('../data/transactions/status-'+order_nb+'.txt', "paid");
+  res.redirect('/api/payment-success');
+})
+
 app.use('/api/monitoring', (req, res, next) => {
   const order_nb = req.query.ordernb;
-  if (!fs.existsSync('../data/transactions/price-'+order_nb+'.txt') || !fs.existsSync('../data/hot-wallet/private/'+order_nb+'.txt')) {
+  if (tools.read('../data/transactions/status-'+order_nb+'.txt') == "paid") {
+    res.redirect('/api/payment-success');
+  }
+  else if (!fs.existsSync('../data/transactions/price-'+order_nb+'.txt') || !fs.existsSync('../data/hot-wallet/private/'+order_nb+'.txt')) {
     res.redirect('/api/payment-failed');
   }
   else{
@@ -56,7 +66,7 @@ app.use('/api/monitoring', (req, res, next) => {
         }
         const amount_to_transfer = received - amount_to_refund - (2*monitoring.Get_Fees());
         transfer.Send_Money_To_Merchand(merchand_address, order_nb, amount_to_transfer); //transfer from order_wallet to merchand wallet automatically
-        res.redirect('/api/payment-success'); //TODO send back if transaction failed
+        res.redirect('/api/checking-payment?ordernb='+order_nb); //TODO send back if transaction failed
       }
       else{
         const transaction_info = {
