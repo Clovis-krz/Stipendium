@@ -57,8 +57,8 @@ function Get_Last_Transaction_Number(path){
     var max_order_nb = 0;
     for (let index = 0; index < files.length; index++) {
         var order_nb = "";
-        for (let index2 = 0; index2 < (files[index].length)-4; index2++) {
-            order_nb = order_nb + files[index][index2];  
+        for (let index2 = 7; index2 < (files[index].length)-4; index2++) {
+            order_nb = order_nb + files[index][index2]; 
         }
         if (Number(order_nb) > max_order_nb) 
             max_order_nb = Number(order_nb);

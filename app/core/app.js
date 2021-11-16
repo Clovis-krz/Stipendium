@@ -1,4 +1,5 @@
 const fs = require('fs');
+var cron = require('node-cron');
 const { time } = require('console');
 const express = require('express');
 const account = require('./new-account');
@@ -64,7 +65,7 @@ app.use('/api/monitoring', (req, res, next) => {
           amount_to_refund = (-1)*amount_to_pay - monitoring.Get_Fees();
           transaction_history.Refund_customer(order_nb, amount_to_refund);
         }
-        const amount_to_transfer = received - amount_to_refund - (2*monitoring.Get_Fees());
+        const amount_to_transfer = received - amount_to_refund - 2*monitoring.Get_Fees();
         transfer.Send_Money_To_Merchand(merchand_address, order_nb, amount_to_transfer); //transfer from order_wallet to merchand wallet automatically
         res.redirect('/api/checking-payment?ordernb='+order_nb); //TODO send back if transaction failed
       }

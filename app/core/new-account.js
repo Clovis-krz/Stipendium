@@ -14,7 +14,7 @@ var Create_Account = (async => {
   const key_pairs = web3.Keypair.generate();
 
   //console.log(key_pairs);; //Display newly generated private key
-  var max_nb = tools.Get_Last_Transaction_Number('../data/hot-wallet/private/');
+  var max_nb = tools.Get_Last_Transaction_Number('../data/transactions/');
   var new_transaction_nb = max_nb + 1;
   
   const arr_private_key = key_pairs._keypair.secretKey;
