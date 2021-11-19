@@ -71,6 +71,7 @@ app.use('/api/monitoring', (req, res, next) => {
       }
       else{
         const transaction_info = {
+          order_nb,
           public_key,
           amount,
           amount_to_pay,
