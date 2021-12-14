@@ -40,20 +40,20 @@ app.use('/api/checking-payment', (req, res, next) => {
   res.redirect('/api/payment-success');
 })
 
-app.use('/api/monitoring', (req, res, next) => {
+app.get('/api/monitoring', (req, res, next) => {
   const order_nb = req.query.ordernb;
   if (tools.read('../data/transactions/status-'+order_nb+'.txt') == "paid") {
     res.redirect('/api/payment-success');
   }
   else if (!fs.existsSync('../data/transactions/price-'+order_nb+'.txt') || !fs.existsSync('../data/hot-wallet/private/'+order_nb+'.txt')) {
-    res.redirect('/api/payment-failed');
+    res.status(404).json({payment_status: "transaction number not valid"});
   }
   else{
     const public_key = tools.PublicKey_From_OrderNb(order_nb);
     const amount = Number(tools.read('../data/transactions/price-'+order_nb+'.txt'));
     var time_left = tools.Time_Remaining('../data/hot-wallet/private/'+order_nb+'.txt');
     if (time_left == 0) {
-      res.redirect('/api/payment-failed');
+      res.status(405).json({payment_status: "failed, time elapsed"});
     }
     else{
     monitoring.Amount_Received(order_nb).then(received => {
@@ -62,7 +62,7 @@ app.use('/api/monitoring', (req, res, next) => {
         var amount_to_refund = 0;
         const merchand_address = tools.read('../data/hot-wallet/merchand_public_address.txt');
         if (amount_to_pay < 0 && (amount_to_pay*(-1)) > (2*monitoring.Get_Fees()) ) { //If customer sent more than required, send back what's over to customer
-          amount_to_refund = (-1)*amount_to_pay - monitoring.Get_Fees();
+          amount_to_refund = (-1)*amount_to_pay - 2*monitoring.Get_Fees();
           transaction_history.Refund_customer(order_nb, amount_to_refund);
         }
         const amount_to_transfer = received - amount_to_refund - 2*monitoring.Get_Fees();

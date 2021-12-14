@@ -26,4 +26,4 @@ const tools = require('../tools');
       await connection.confirmTransaction(airdropSignature);
 
     console.log("airdrop complete");
-})('HdKiF4DXKBpbs1XohFVCyhofDjGgvocCGSeWZhK3XvrA');
+})('CYXoLByX6KGrCVhjAao7rNAMqVQTjqLL6o7BJxk7ywNq');
