@@ -4,7 +4,7 @@ const monitoring = require('./monitoring');
 const transfer = require('./transfer');
 const transaction_history = require('./transaction_history');
 
-cron.schedule('* * * * *', () => {
+setInterval(() => {
     var fees = database.get_fees();
 
     database.update_expired_transactions(); // Set all the expired pending transactions to failed
@@ -43,4 +43,4 @@ cron.schedule('* * * * *', () => {
             }
         })
     });
-});
+}, 3000);
