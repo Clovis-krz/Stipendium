@@ -25,7 +25,8 @@ app.use('/api/payment-success', (req, res, next) => {
 })
 
 app.use('/api/payment-failed', (req, res, next) => {
-  res.status(403).json({payment_status: "failed, time elapsed"});
+  const message = req.query.message;
+  res.status(403).json({payment_status: message});
 })
 
 app.get('/api/monitoring', (req, res, next) => {
@@ -40,7 +41,7 @@ app.get('/api/monitoring', (req, res, next) => {
       res.redirect('/api/payment-success');
     }
     else if (transaction.status == "failed"){
-      res.redirect('/api/payment-failed');
+      res.redirect('/api/payment-failed?message='+transaction.message);
     }
     else{
         res.status(200).json(transaction);
