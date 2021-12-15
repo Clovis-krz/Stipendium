@@ -1,4 +1,5 @@
 const web3 =  require("@solana/web3.js");
+const database = require('./database');
 const fs = require('fs');
 const tools = require('./tools.js');
 
@@ -10,7 +11,7 @@ var Send_Money_To_Merchand = (async (send_to_public_address, order_nb, amount) =
     web3.clusterApiUrl('devnet'),
     'confirmed',
   );
-  const secret = tools.read('../data/hot-wallet/private/'+order_nb+'.txt');
+  const secret = database.get_private(order_nb);
   let secretKey = tools.String_To_Uint8Array(secret, 64);
   const {Keypair} = require("@solana/web3.js");
   let from = Keypair.fromSecretKey(secretKey);

@@ -1,4 +1,5 @@
 const web3 =  require("@solana/web3.js");
+const database = require('./database');
 const { read } = require("fs");
 const tools = require('./tools');
 const transfer = require('./transfer');
@@ -16,7 +17,7 @@ var Get_Customer_Public_Address = (async (public_address)=> {
   })
 
 var Refund_customer = (async (order_nb, amount) => {
-    let private = tools.read('../data/hot-wallet/private/'+order_nb+'.txt');
+    let private = database.get_private(order_nb);
     let secretKey = tools.String_To_Uint8Array(private, 64);
     const {Keypair} = require("@solana/web3.js");
     let order_keypair = Keypair.fromSecretKey(secretKey);

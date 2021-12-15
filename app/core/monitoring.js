@@ -1,6 +1,8 @@
 const web3 =  require("@solana/web3.js");
+const database = require('./database');
 const { read } = require("fs");
 const tools = require('./tools');
+const { get } = require("lodash");
 
 var Info_account = (async (order_nb)=> {
     // Connect to cluster
@@ -8,7 +10,7 @@ var Info_account = (async (order_nb)=> {
       web3.clusterApiUrl('devnet'),
       'confirmed',
     );
-    const private = tools.read('../data/hot-wallet/private/'+order_nb+'.txt');
+    const private = database.get_private(order_nb);
     let secretKey = tools.String_To_Uint8Array(private, 64);
     
     const {Keypair} = require("@solana/web3.js");
@@ -41,13 +43,13 @@ var Get_Fees_process = (async () => {
   );
   let blockhash = await connection.getRecentBlockhash();
   let fees = await tools.Lamports_To_SOL(blockhash.feeCalculator.lamportsPerSignature);
-  tools.writeFile('../data/fees.txt', String(fees))
+  database.update_fees(fees);
   return fees;
 })
 
 function Get_Fees(){
   Get_Fees_process();
-  let fees = tools.read('../data/fees.txt');
+  let fees = database.get_fees();
   return fees;
 }
 
