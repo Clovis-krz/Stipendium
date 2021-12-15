@@ -46,7 +46,7 @@ function get_pending_transactions(){
         return result;
     }
     else{
-        return false;
+        return [];
     }
 }
 
@@ -139,14 +139,12 @@ function register(public_key, api_key, name){
 function update_expired_transactions(){
     var time = Math.floor(Date.now()/1000);
     var transactions = get_pending_transactions();
-    if (transactions.length > 0) {
-        transactions.forEach(transaction => {
-            if (transaction.expiration < time) {
-                transaction_failed(transaction.transaction_nb, "time elapsed");
-                console.log("Transaction: "+transaction.transaction_nb+", Failed: time elapsed");
-            }
-        });
-    }
+    transactions.forEach(transaction => {
+        if (transaction.expiration < time) {
+            transaction_failed(transaction.transaction_nb, "time elapsed");
+            console.log("Transaction: "+transaction.transaction_nb+", Failed: time elapsed");
+        }
+    });
 }
 
 module.exports = { get_transaction_info, get_private, get_transaction_status, get_pending_transactions, get_expired_transactions, get_public_key_from_transaction_nb, get_fees, is_transaction_expired, update_fees, update_amount_to_pay, add_transaction, transaction_paid, transaction_failed, register, update_expired_transactions };
