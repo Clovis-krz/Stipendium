@@ -38,10 +38,10 @@ app.get('/api/monitoring', (req, res, next) => {
   else{
 
     if (transaction.status == "paid") {
-      res.redirect('/api/payment-success');
+      res.status(200).json({payment_status: "success", message: transaction.message});
     }
     else if (transaction.status == "failed"){
-      res.redirect('/api/payment-failed?message='+transaction.message);
+      res.status(200).json({payment_status: "failed", message: transaction.message});
     }
     else{
         res.status(200).json(transaction);
