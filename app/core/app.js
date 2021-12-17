@@ -17,17 +17,8 @@ app.use('/api/pay', (req, res, next) => {
     var amount = req.query.amount;
     var [private, public_key, transaction_nb] = account.Create_Account();
     var transaction_nb = database.add_transaction(1, private, public_key, amount, "SOL");
-    res.redirect('/api/monitoring?ordernb='+transaction_nb);
+    res.status(200).json({url: "http://localhost:8080/monitoring?transaction="+transaction_nb});
   });
-
-app.use('/api/payment-success', (req, res, next) => {
-  res.status(200).json({payment_status: "success"});
-})
-
-app.use('/api/payment-failed', (req, res, next) => {
-  const message = req.query.message;
-  res.status(403).json({payment_status: message});
-})
 
 app.get('/api/monitoring', (req, res, next) => {
   const order_nb = req.query.ordernb;
