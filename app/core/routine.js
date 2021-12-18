@@ -20,13 +20,13 @@ setInterval(() => {
                 database.update_amount_to_pay(transaction.transaction_nb, 0);
                 transfer.Send_Money_To_Merchand(merchand_address, transaction.transaction_nb, amount_total - fees);
                 transaction_history.Refund_customer(transaction.transaction_nb, to_refund - (3*fees));
-                console.log('transaction '+transaction.transaction_nb+', '+(money_received - (3*fees))+' refunded');
+                //console.log('transaction '+transaction.transaction_nb+', '+(to_refund - (3*fees))+' refunded');
             }
             else if (money_received >= amount_total) { // Money received is enough or over the amount but not enough to refund
                 database.transaction_paid(transaction.transaction_nb);
                 database.update_amount_to_pay(transaction.transaction_nb, 0);
                 transfer.Send_Money_To_Merchand(merchand_address, transaction.transaction_nb, amount_total - fees);
-                console.log('transaction '+transaction.transaction_nb+', paid');
+                //console.log('transaction '+transaction.transaction_nb+', paid');
             }
             else if (amount_total > money_received){ // Money received is not enough, update money to send left
                 database.update_amount_to_pay(transaction.transaction_nb, amount_total - money_received);
@@ -39,7 +39,7 @@ setInterval(() => {
         monitoring.Amount_Received(transaction.transaction_nb).then(money_received => {
             if (money_received > 10*fees) { // If we received over 10 times the amount of fees, refund the customer
                 transaction_history.Refund_customer(transaction.transaction_nb, money_received - (3*fees));
-                console.log('transaction '+transaction.transaction_nb+', '+(money_received - (3*fees))+' refunded');
+                //console.log('transaction '+transaction.transaction_nb+', '+(money_received - (3*fees))+' refunded');
             }
         })
     });

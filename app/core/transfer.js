@@ -31,8 +31,11 @@ var Send_Money_To_Merchand = (async (send_to_public_address, order_nb, amount) =
     connection,
     transaction,
     [from],
-  );
-  console.log('Transaction Nb '+order_nb+' : '+'Sent '+ amount +' SOL to '+send_to_public_address+' , Signature of the transaction : ', signature);
+  ).then( res => {
+    console.log('Transaction Nb '+order_nb+' : '+'Sent '+ amount +' SOL to '+send_to_public_address+' , Signature of the transaction : ', res)
+  }).catch( err => {
+    console.log("processus running...wait");
+  });
 })
 
 module.exports = { Send_Money_To_Merchand };
