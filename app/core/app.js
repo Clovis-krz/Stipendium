@@ -29,10 +29,10 @@ app.get('/api/monitoring', (req, res, next) => {
   else{
 
     if (transaction.status == "paid") {
-      res.status(200).json({payment_status: "success", message: transaction.message});
+      res.status(200).json({transaction_nb: transaction.transaction_nb, payment_status: "success", message: transaction.message});
     }
     else if (transaction.status == "failed"){
-      res.status(200).json({payment_status: "failed", message: transaction.message});
+      res.status(200).json({transaction_nb: transaction.transaction_nb, payment_status: "failed", message: transaction.message});
     }
     else{
         res.status(200).json(transaction);
