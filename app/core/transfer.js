@@ -4,8 +4,6 @@ const fs = require('fs');
 const tools = require('./tools.js');
 
 var Send_Money_To_Merchand = (async (send_to_public_address, order_nb, amount) => {
-  const web3 =  require("@solana/web3.js");
-
   // Connect to cluster
   const connection = new web3.Connection(
     web3.clusterApiUrl('devnet'),
