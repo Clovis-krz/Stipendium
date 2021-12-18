@@ -1,13 +1,13 @@
 const { forEach } = require('lodash');
+require('dotenv').config();
 const mariadb = require('sync-mysql');
 const connection = new mariadb({
-     host: 'krzyzanowski.fr', 
-     user:'stipendium', 
-     password: 'ClovisestTropBo88!',
-     database: "stipendium",
-     port: "3307"
+     host: process.env.DB_HOST, 
+     user:process.env.DB_USER, 
+     password: process.env.DB_PASS,
+     database: process.env.DB_NAME,
+     port: process.env.DB_PORT
 });
-
 
 // GET Functions
 function get_transaction_info(transaction_nb){
