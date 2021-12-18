@@ -4,7 +4,6 @@ const tools = require('./tools');
 
 var Create_Account = (async => {
   // Connect to cluster
-  console.log(web3.clusterApiUrl('devnet'))
   const connection = new web3.Connection(
     web3.clusterApiUrl('devnet'),
     'confirmed',

@@ -27,13 +27,11 @@ var Send_Money_To_Merchand = (async (send_to_public_address, order_nb, amount) =
   );
 
   // Sign transaction, broadcast, and confirm
-  const signature = await web3.sendAndConfirmTransaction(
-    connection,
-    transaction,
-    [from],
-  ).then( res => {
+  const signature = await web3.sendAndConfirmTransaction(connection, transaction, [from],)
+  .then( res => {
     console.log('Transaction Nb '+order_nb+' : '+'Sent '+ amount +' SOL to '+send_to_public_address+' , Signature of the transaction : ', res)
-  }).catch( err => {
+  })
+  .catch( err => {
     console.log("processus running...wait");
   });
 })

@@ -31,7 +31,6 @@ var Amount_Received = (async(order_nb) => {
     }
     else{
         let sol_received = tools.Lamports_To_SOL(Number(res.lamports));
-        console.log("Order Nb "+order_nb+" : received : "+ sol_received+" SOL");
         return sol_received;
     }
 })
