@@ -1,4 +1,5 @@
 const web3 =  require("@solana/web3.js");
+require('dotenv').config();
 const database = require('./database');
 const { read } = require("fs");
 const tools = require('./tools');
@@ -7,7 +8,7 @@ const { get } = require("lodash");
 var Info_account = (async (order_nb)=> {
     // Connect to cluster
     var connection = new web3.Connection(
-      web3.clusterApiUrl('devnet'),
+      web3.clusterApiUrl(process.env.BLOCKCHAIN_NETWORK),
       'confirmed',
     );
     const private = database.get_private(order_nb);

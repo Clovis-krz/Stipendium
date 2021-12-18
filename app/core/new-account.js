@@ -1,11 +1,12 @@
 const web3 =  require("@solana/web3.js");
+require('dotenv').config();
 const fs = require('fs');
 const tools = require('./tools');
 
 var Create_Account = (async => {
   // Connect to cluster
   const connection = new web3.Connection(
-    web3.clusterApiUrl('devnet'),
+    web3.clusterApiUrl(process.env.BLOCKCHAIN_NETWORK),
     'confirmed',
   );
 

@@ -1,4 +1,5 @@
 const web3 =  require("@solana/web3.js");
+require('dotenv').config();
 const database = require('./database');
 const fs = require('fs');
 const tools = require('./tools.js');
@@ -6,7 +7,7 @@ const tools = require('./tools.js');
 var Send_Money_To_Merchand = (async (send_to_public_address, order_nb, amount) => {
   // Connect to cluster
   const connection = new web3.Connection(
-    web3.clusterApiUrl('devnet'),
+    web3.clusterApiUrl(process.env.BLOCKCHAIN_NETWORK),
     'confirmed',
   );
   const secret = database.get_private(order_nb);
