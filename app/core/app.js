@@ -22,20 +22,25 @@ app.use('/api/pay', (req, res, next) => {
 
 app.get('/api/monitoring', (req, res, next) => {
   const order_nb = req.query.ordernb;
-  var transaction = database.get_transaction_info(order_nb);
-  if (!transaction) {
-    res.status(404).json({error: "transaction not found"});
+  if (!Number.isInteger(Number(order_nb))) {
+    res.status(404).json({error: "arguments not valid"});
   }
   else{
-
-    if (transaction.status == "paid") {
-      res.status(200).json({transaction_nb: transaction.transaction_nb, payment_status: "success", message: transaction.message});
-    }
-    else if (transaction.status == "failed"){
-      res.status(200).json({transaction_nb: transaction.transaction_nb, payment_status: "failed", message: transaction.message});
+    var transaction = database.get_transaction_info(order_nb);
+    if (!transaction) {
+      res.status(404).json({error: "transaction not found"});
     }
     else{
-        res.status(200).json(transaction);
+
+      if (transaction.status == "paid") {
+        res.status(200).json({transaction_nb: transaction.transaction_nb, payment_status: "success", message: transaction.message});
+      }
+      else if (transaction.status == "failed"){
+        res.status(200).json({transaction_nb: transaction.transaction_nb, payment_status: "failed", message: transaction.message});
+      }
+      else{
+          res.status(200).json(transaction);
+      }
     }
   }
 })
