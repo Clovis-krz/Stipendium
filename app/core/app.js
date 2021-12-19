@@ -63,6 +63,24 @@ app.get('/api/delete-account', (req, res, next) => {
   }
 })
 
+app.get('/api/update-merchand-info', (req, res, next) => {
+  var token_data = crypto.decode_token(req.query.token);
+  var element = req.query.element;
+  var value = req.query.value;
+  if (token_data) {
+    var updated = database.update_merchand_info(token_data, element, value);
+    if (updated) {
+      res.status(200).json({info_update: "successfully updated "+element+" to "+value});
+    }
+    else{
+      res.status(400).json({info_update: "error, not allowed"});
+    }
+  }
+  else{
+    res.status(404).json({info_update: "error, account not found"});
+  }
+})
+
 app.get('/api/update-password', (req, res, next) => {
   var token_data = crypto.decode_token(req.query.token);
   var password = req.query.password;

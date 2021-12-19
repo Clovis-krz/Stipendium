@@ -205,6 +205,19 @@ function login(email, password){
     }
 }
 
+function update_merchand_info(email, to_update, value){
+    if (to_update == "merchand_email" || to_update == "merchand_firstname" || to_update == "merchand_lastname" || to_update == "store_name") {
+        email = SqlString.escape(email);
+        var element = SqlString.escapeId(to_update);
+        value = SqlString.escape(value);
+        var result = connection.query("UPDATE merchand SET "+element+"="+value+" WHERE merchand_email="+email);
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 function update_password(email, password, new_password){
     email = SqlString.escape(email);
     var password_db = connection.query("SELECT merchand_pass FROM merchand WHERE merchand_email="+email);
@@ -279,6 +292,7 @@ module.exports = {
     get_account,
     delete_account,
     login,
+    update_merchand_info,
     update_password,
     update_wallet,
     add_API_key,
