@@ -107,9 +107,15 @@ app.get('/api/update-password', (req, res, next) => {
 
 app.get('/api/update-wallet', (req, res, next) => {
   var token_data = crypto.decode_token(req.query.token);
+  var password = req.query.password;
   if (token_data) {
-    database.update_wallet(token_data, req.query.wallet);
-    res.status(200).json({wallet_update: "success"});
+    var update = database.update_wallet(token_data, req.query.wallet, password);
+    if (update) {
+      res.status(200).json({wallet_update: "success"});
+    }
+    else{
+      res.status(400).json({wallet_update: "failed, wrong password"});
+    }
   }
   else{
     res.status(404).json({wallet_update: "error, account not found"});

@@ -248,11 +248,22 @@ function update_password(email, password, new_password){
     }
 }
 
-function update_wallet(email, new_wallet_address){
+function update_wallet(email, new_wallet_address, password){
     email = SqlString.escape(email);
     new_wallet_address = SqlString.escape(new_wallet_address);
-    var result = connection.query("UPDATE merchand SET public_key="+new_wallet_address+" WHERE merchand_email="+email);
-    return result;
+    var password_db = connection.query("SELECT merchand_pass FROM merchand WHERE merchand_email="+email);
+    if (password_db[0]) {
+        if (crypto.check_password(password, password_db[0].merchand_pass)) {
+            var result = connection.query("UPDATE merchand SET public_key="+new_wallet_address+" WHERE merchand_email="+email);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
 }
 
 function add_API_key(email){
