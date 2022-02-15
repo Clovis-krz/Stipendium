@@ -189,9 +189,21 @@ function get_account(email){
     }
 }
 
-function delete_account(email){
+function delete_account(email, password){
     email = SqlString.escape(email);
-    var result = connection.query("DELETE FROM merchand WHERE merchand_email="+email);
+    var password_db = connection.query("SELECT merchand_pass FROM merchand WHERE merchand_email="+email);
+    if (password_db[0]) {
+        if (crypto.check_password(password, password_db[0].merchand_pass)) {
+            var result = connection.query("DELETE FROM merchand WHERE merchand_email="+email);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
 }
 
 function login(email, password){

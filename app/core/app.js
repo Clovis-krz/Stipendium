@@ -53,10 +53,16 @@ app.get('/api/create-account', (req, res, next) => {
 })
 
 app.get('/api/delete-account', (req, res, next) => {
+  var password = req.query.password;
   var token_data = crypto.decode_token(req.query.token);
   if (token_data) {
-    database.delete_account(token_data);
-    res.status(200).json({account_deletion: "success"});
+    var deletion = database.delete_account(token_data, password);
+    if (deletion) {
+      res.status(200).json({account_deletion: "success"});
+    }
+    else{
+      res.status(400).json({account_deletion: "failed, wrong password"});
+    }
   }
   else{
     res.status(404).json({account_deletion: "error, not found"});
