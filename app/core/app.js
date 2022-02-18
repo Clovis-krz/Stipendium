@@ -149,7 +149,6 @@ app.use('/api/pay', (req, res, next) => {
     var api_key = req.query.key;
     var store_nb = database.get_store_from_API_key(api_key);
     if (store_nb) {
-      console.log(store_nb);
       var amount = req.query.amount;
       if (isNaN(amount)){
         res.status(404).json({error: "amount, not a number"});
