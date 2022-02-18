@@ -153,7 +153,7 @@ function create_account(email, clear_password, firstname, lastname, store_name){
     firstname = SqlString.escape(firstname);
     lastname = SqlString.escape(lastname);
     store_name = SqlString.escape(store_name);
-    if (email && clear_password && firstname && lastname && store_name) {
+    if (email != "undefined" && email != "" && clear_password !="" && clear_password != "undefined" && firstname != "undefined" && lastname != "undefined" && store_name != "undefined") {
         var does_exist = connection.query('SELECT merchand_email FROM merchand');
         var found = false;
         does_exist.forEach(element => {
