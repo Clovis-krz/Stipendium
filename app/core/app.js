@@ -146,20 +146,29 @@ app.get('/api/display-api', (req, res, next) => {
 
 // ADD TRANSACTION
 app.use('/api/pay', (req, res, next) => {
-    var amount = req.query.amount;
-    if (isNaN(amount)){
-      res.status(404).json({error: "amount, not a number"});
-    }
-    else{
-      if (parseFloat(amount) < 0.000065) {
-        res.status(404).json({error: "amount is too small"});
+    var api_key = req.query.key;
+    var store_nb = database.get_store_from_API_key(api_key);
+    if (store_nb) {
+      console.log(store_nb);
+      var amount = req.query.amount;
+      if (isNaN(amount)){
+        res.status(404).json({error: "amount, not a number"});
       }
       else{
-        var [private, public_key, transaction_nb] = account.Create_Account();
-        var transaction_nb = database.add_transaction(1, private, public_key, amount, "SOL");
-        res.status(200).json({url: "http://localhost:8080/monitoring?transaction="+transaction_nb});
+        if (parseFloat(amount) < 0.000065) {
+          res.status(404).json({error: "amount is too small"});
+        }
+        else{
+          var [private, public_key, transaction_nb] = account.Create_Account();
+          var transaction_nb = database.add_transaction(store_nb, private, public_key, amount, "SOL");
+          res.status(200).json({url: "http://localhost:8080/monitoring?transaction="+transaction_nb});
+        }
       }
     }
+    else{
+      res.status(404).json({error: "API not recognized"});
+    }
+    
   });
 
 // MONITOR A TRANSACTION

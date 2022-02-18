@@ -281,7 +281,7 @@ function get_API_key(email){
 }
 
 function get_store_from_API_key(user_api_key){
-    if (bcrypt.is_Api_key(user_api_key)) {
+    if (crypto.is_Api_key(user_api_key)) {
         var uuid = crypto.API_key_to_uuid(user_api_key);
         var result = connection.query("SELECT id_store FROM merchand WHERE api_key='"+uuid+"'");
         if (result.length > 0) {
