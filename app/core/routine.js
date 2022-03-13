@@ -1,4 +1,3 @@
-var cron = require('node-cron');
 const database = require('./database');
 const monitoring = require('./monitoring');
 const transfer = require('./transfer');

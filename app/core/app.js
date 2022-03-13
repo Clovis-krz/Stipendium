@@ -1,4 +1,3 @@
-var cron = require('node-cron');
 var routine = require('./routine');
 const database = require('./database');
 const crypto = require('./crypto');

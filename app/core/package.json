@@ -1,0 +1,27 @@
+{
+  "name": "stipendium",
+  "version": "1.0.0",
+  "description": "stipendium backend in node js",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "clovis krzyzanowski",
+  "license": "ISC",
+  "dependencies": {
+    "@solana/web3.js": "^1.36.0",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "http": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "sqlstring": "^2.3.3",
+    "sync-mysql": "^3.0.1",
+    "uuid-apikey": "^1.5.3"
+  }
+}
