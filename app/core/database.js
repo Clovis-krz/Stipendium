@@ -16,9 +16,7 @@ const connection = new mariadb({
 function get_transaction_info(transaction_nb){
     var result = connection.query('SELECT transaction_nb, public_key, amount_total, amount_to_pay, currency, expiration, status, message FROM transactions WHERE transaction_nb='+transaction_nb);
     var id_store = connection.query('SELECT id_store FROM transactions WHERE transaction_nb='+transaction_nb);
-    console.log(id_store[0].id_store);
     var store_name = connection.query('SELECT store_name FROM merchand WHERE id_store='+id_store[0].id_store);
-    console.log(store_name[0].store_name);
     if (result.length > 0) {
         result[0].store_name = store_name[0].store_name;
         return result[0];
