@@ -222,6 +222,18 @@ function update_merchand_info(email, to_update, value){
         email = SqlString.escape(email);
         var element = SqlString.escapeId(to_update);
         value = SqlString.escape(value);
+        if (to_update == "merchand_email") {
+            var found = false;
+            var does_exist = connection.query('SELECT merchand_email FROM merchand');
+            does_exist.forEach(element => {
+                if (SqlString.escape(element.merchand_email) == value) {
+                    found = true;
+                }
+            })
+            if (found) {
+                return false;
+            }
+        }
         var result = connection.query("UPDATE merchand SET "+element+"="+value+" WHERE merchand_email="+email);
         return true;
     }
