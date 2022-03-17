@@ -76,6 +76,16 @@ function get_public_key_from_transaction_nb(transaction_nb){
         return false;
     }
 }
+function get_public_key_from_id_store(id_store){
+    var result = connection.query('SELECT public_key FROM merchand WHERE id_store='+id_store);
+    if (result.length > 0) {
+        return result[0].public_key;
+    }
+    else{
+        return false;
+    }
+}
+
 function get_fees(){
     var result = connection.query('SELECT fees FROM blockchains WHERE name="solana"');
     return result[0].fees;
@@ -317,7 +327,8 @@ module.exports = {
     get_transaction_status, 
     get_pending_transactions, 
     get_expired_transactions, 
-    get_public_key_from_transaction_nb, 
+    get_public_key_from_transaction_nb,
+    get_public_key_from_id_store, 
     get_fees, 
     is_transaction_expired, 
     update_fees, 

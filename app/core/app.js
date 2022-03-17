@@ -147,6 +147,7 @@ app.get('/api/display-api', (req, res, next) => {
 app.use('/api/pay', (req, res, next) => {
     var api_key = req.query.key;
     var store_nb = database.get_store_from_API_key(api_key);
+    var merchand_wallet = database.get_public_key_from_id_store(store_nb);
     if (store_nb) {
       var amount = req.query.amount;
       if (isNaN(amount)){
@@ -155,6 +156,9 @@ app.use('/api/pay', (req, res, next) => {
       else{
         if (parseFloat(amount) < 0.000065) {
           res.status(404).json({error: "amount is too small"});
+        }
+        else if (merchand_wallet == "NONE"){
+          res.status(404).json({error: "Please setup your wallet"});
         }
         else{
           var [private, public_key, transaction_nb] = account.Create_Account();
