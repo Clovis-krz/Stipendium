@@ -143,6 +143,17 @@ app.get('/api/display-api', (req, res, next) => {
   }
 })
 
+app.get('/api/transactions', (req, res, next) => {
+  var token_data = crypto.decode_token(req.query.token);
+  if (token_data) {
+    var transactions = database.get_merchand_transactions(token_data);
+    res.status(200).json({message: "success", transactions: transactions});
+  }
+  else{
+    res.status(404).json({message: "error, account not found"});
+  }
+})
+
 // ADD TRANSACTION
 app.use('/api/pay', (req, res, next) => {
     var api_key = req.query.key;

@@ -305,6 +305,30 @@ function get_API_key(email){
     return api_key;
 }
 
+function get_merchand_transactions(email){
+    email = SqlString.escape(email);
+    var merchand = connection.query("SELECT id_store FROM merchand WHERE merchand_email="+email);
+    var result = connection.query("SELECT transaction_nb, amount_total, expiration, status, message FROM transactions WHERE id_store="+merchand[0].id_store);
+    result.forEach( transaction => {
+        if (transaction.status == "failed") {
+            transaction.time = transaction.expiration.toString();
+            delete transaction.expiration;
+            delete transaction.message;
+        }
+        else if (transaction.status == "pending") {
+            transaction.time = (transaction.expiration - 3600).toString();
+            delete transaction.expiration;
+            delete transaction.message;
+        }
+        else{
+            transaction.time = transaction.message;
+            delete transaction.expiration;
+            delete transaction.message;
+        }
+    })
+    return result;
+}
+
 function get_store_from_API_key(user_api_key){
     if (crypto.is_Api_key(user_api_key)) {
         var uuid = crypto.API_key_to_uuid(user_api_key);
@@ -346,5 +370,6 @@ module.exports = {
     update_wallet,
     add_API_key,
     get_API_key,
+    get_merchand_transactions,
     get_store_from_API_key 
 };
