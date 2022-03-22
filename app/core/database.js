@@ -176,7 +176,8 @@ function create_account(email, clear_password, firstname, lastname, store_name){
         })
         if (!found) {
             var last_id_store = connection.query('SELECT MAX(id_store) as nb FROM merchand');
-            var id_store = last_id_store[0].nb + 1;
+            var last_id_transac = connection.query('SELECT MAX(id_store) as nb FROM transactions');
+            var id_store = Math.max(last_id_store[0].nb, last_id_transac[0].nb) + 1;
             var password = crypto.hash_password(clear_password);
             password = SqlString.escape(password);
             email = SqlString.escape(email);
